@@ -1,4 +1,6 @@
 # Uncomment these values and fill them in.
+#port: 5000
+#host: 127.0.0.1
 #calendar_id:
 #token:
 
