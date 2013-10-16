@@ -5,7 +5,7 @@
 
 Backlight::Backlight(int pin) {
   this->pin = pin;
-  animate_speed = 100;
+  animate_speed = 50;
   brightness = 0;
   brightness_target = 100;
   animate = true;
