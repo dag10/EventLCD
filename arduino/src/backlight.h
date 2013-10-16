@@ -16,12 +16,27 @@ class Backlight {
     float getBrightness();
     float getRealBrightness();
 
+    void sleep(float seconds);
+
+    void flash(int times);
+
   private:
     int pin;
+
     float animate_speed;
     bool animate;
+
+    float sleep_remaining;
+
     float brightness;
     float brightness_target;
+
+    float flash_min_brightness;
+    float flash_max_brightness;
+    float flash_animate_speed;
+
+    int flashes_remaining;
+    float preflash_brightness;
 };
 
 #endif
