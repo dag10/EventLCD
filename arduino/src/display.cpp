@@ -23,12 +23,21 @@ void Display::update(float elapsed) {
         else if (network_status == CONNECTING)
           lcd->print("connecting");
 
+        // Print MAC address
+        lcd->setCursor(0, 1);
+        for (int i = 0; i < 6; i++) {
+          if (mac[i] < 0x10) lcd->print(0);
+          lcd->print(mac[i], HEX);
+          if (i < 5) lcd->print(":");
+        }
+
         if (network_status == CONNECTED) {
-          lcd->setCursor(0, 1);
-          lcd->print("IP: ");
-          lcd->print("todo");
+          // Print IP address
           lcd->setCursor(0, 2);
-          lcd->print("MAC: todo");
+          for (int i = 0; i < 4; i++) {
+            lcd->print(((byte*)&ip)[i], DEC);
+            if (i < 3) lcd->print(".");
+          }
         }
       }
       break;
@@ -53,11 +62,8 @@ void Display::setMAC(uint8_t mac[]) {
     needs_update = true;
 }
 
-void Display::setIP(const uint8_t a, const uint8_t b, const uint8_t c, const uint8_t d) {
-  ip[0] = a;
-  ip[1] = b;
-  ip[2] = c;
-  ip[3] = d;
+void Display::setIP(uint32_t ip) {
+  this->ip = ip;
   if (screen == SCREEN_NETWORK)
     needs_update = true;
 }

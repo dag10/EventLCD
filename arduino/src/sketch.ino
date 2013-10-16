@@ -44,11 +44,7 @@ void setup() {
 
   // Check if we connected
   if (assignedIP) {
-    display->setIP(
-        Ethernet.localIP()[0],
-        Ethernet.localIP()[1],
-        Ethernet.localIP()[2],
-        Ethernet.localIP()[3]);
+    display->setIP(Ethernet.localIP());
     display->setNetworkStatus(CONNECTED);
   } else {
     display->setNetworkStatus(DISCONNECTED);
@@ -57,7 +53,9 @@ void setup() {
 
 // Loop
 void loop() {
-  backlight->update((float) delay_interval / 1000.f);
+  float elapsed = delay_interval / 1000.f;
+  display->update(elapsed);
+  backlight->update(elapsed);
   delay(delay_interval);
 }
 

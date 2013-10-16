@@ -3,25 +3,24 @@
 #ifndef _DISPLAY_H
 #define _DISPLAY_H
 
+#include <arduino.h>
 #include <LiquidCrystal595.h>
-#include <SPI.h>
-#include <Ethernet.h>
 
+// LCD width and height
 const int width = 20;
 const int height = 4;
 
+// Possible screens to show
 typedef enum {
   SCREEN_NETWORK,
 } Screen;
 
+// Possible network statuses
 typedef enum {
   DISCONNECTED,
   CONNECTED,
   CONNECTING,
 } NetworkStatus;
-
-// TODO Make enum of updatable fields, and a bool array of what needs updating
-//      so as to allow updates of parts of the screen.
 
 class Display {
   public:
@@ -33,7 +32,7 @@ class Display {
     void setScreen(Screen screen);
 
     void setMAC(uint8_t mac[]);
-    void setIP(const uint8_t a, const uint8_t b, const uint8_t c, const uint8_t d);
+    void setIP(uint32_t ip);
     void setNetworkStatus(NetworkStatus status);
     
   private:
@@ -41,9 +40,9 @@ class Display {
     Screen screen;
     bool needs_update;
 
-    // Network screen
+    // Network data
     uint8_t mac[6];
-    uint8_t ip[4];
+    uint32_t ip;
     NetworkStatus network_status;
 };
 
