@@ -5,6 +5,7 @@
 
 #include <arduino.h>
 #include <LiquidCrystal595.h>
+#include "request.h"
 
 // LCD width and height
 const int width = 20;
@@ -34,8 +35,11 @@ class Display {
     void setMAC(uint8_t mac[]);
     void setIP(uint32_t ip);
     void setNetworkStatus(NetworkStatus status);
+    void setRequest(Request *request);
     
   private:
+    void printFirst(const char *str, uint16_t length);
+
     LiquidCrystal595 *lcd;
     Screen screen;
     bool needs_update;
@@ -44,6 +48,8 @@ class Display {
     uint8_t mac[6];
     uint32_t ip;
     NetworkStatus network_status;
+    Request *request;
+    RequestState prev_request_state;
 };
 
 #endif

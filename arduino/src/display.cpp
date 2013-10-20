@@ -6,12 +6,24 @@ Display::Display(uint8_t data, uint8_t clock, uint8_t latch) {
   lcd = new LiquidCrystal595(data, latch, clock);
   lcd->begin(width, height);
   lcd->clear();
+
+  network_status = DISCONNECTED;
+  request = 0;
+
   needs_update = true;
 }
 
 void Display::update(float elapsed) {
   switch (screen) {
     case SCREEN_NETWORK:
+      if (request) {
+        RequestState new_state = request->getState();
+        if (new_state != prev_request_state) {
+          needs_update = true;
+          prev_request_state = new_state;
+        }
+      }
+
       if (needs_update) {
         lcd->clear();
         lcd->setCursor(0, 0);
@@ -38,12 +50,30 @@ void Display::update(float elapsed) {
             lcd->print(((byte*)&ip)[i], DEC);
             if (i < 3) lcd->print(".");
           }
+
+          // Print HTTP request information
+          if (request) {
+            lcd->setCursor(0, 3);
+
+            if (request->failed()) {
+              lcd->print("!");
+              printFirst(request->getErrorMessage(), 20 - 1);
+            } else {
+              lcd->print("HTTP: ");
+              printFirst(request->getStatusString(), 20 - 6);
+            }
+          }
         }
       }
       break;
   }
 
   needs_update = false;
+}
+
+void Display::printFirst(const char *str, uint16_t length) {
+  for (int i = 0; i < length && str[i]; i++)
+    lcd->print(str[i]);
 }
 
 Screen Display::getScreen() {
@@ -70,6 +100,12 @@ void Display::setIP(uint32_t ip) {
 
 void Display::setNetworkStatus(NetworkStatus status) {
   network_status = status;
+  if (screen == SCREEN_NETWORK)
+    needs_update = true;
+}
+
+void Display::setRequest(Request *request) {
+  this->request = request;
   if (screen == SCREEN_NETWORK)
     needs_update = true;
 }
