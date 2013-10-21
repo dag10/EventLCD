@@ -184,3 +184,10 @@ const char *Request::getResponseStatus() {
   return "(unknown)";
 }
 
+const char *Request::getData() {
+  if (state != STATE_SUCCESS || !capturing_body)
+    return 0;
+
+  return buffer;
+}
+

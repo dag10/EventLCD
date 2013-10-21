@@ -14,6 +14,7 @@ const int height = 4;
 // Possible screens to show
 typedef enum {
   SCREEN_NETWORK,
+  SCREEN_TEXT,
 } Screen;
 
 // Possible network statuses
@@ -36,6 +37,8 @@ class Display {
     void setIP(uint32_t ip);
     void setNetworkStatus(NetworkStatus status);
     void setRequest(Request *request);
+
+    void setContent(const char *content);
     
   private:
     void printFirst(const char *str, uint16_t length);
@@ -50,6 +53,9 @@ class Display {
     NetworkStatus network_status;
     Request *request;
     RequestState prev_request_state;
+
+    // Text data
+    char *content;
 };
 
 #endif

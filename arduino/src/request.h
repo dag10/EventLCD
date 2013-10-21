@@ -44,6 +44,8 @@ class Request {
     bool failed();
     RequestState getState();
 
+    const char *getData();
+
     const char *getStatusString();
     const char *getErrorMessage();
     const char *getResponseStatus();

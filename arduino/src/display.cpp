@@ -9,6 +9,7 @@ Display::Display(uint8_t data, uint8_t clock, uint8_t latch) {
 
   network_status = DISCONNECTED;
   request = 0;
+  content = 0;
 
   needs_update = true;
 }
@@ -66,6 +67,26 @@ void Display::update(float elapsed) {
         }
       }
       break;
+
+    case SCREEN_TEXT:
+      if (needs_update) {
+        lcd->clear();
+        char *c = content;
+
+        // For each row in the display
+        for (uint8_t r = 0; r < height && *c; r++) {
+          lcd->setCursor(0, r);
+
+          // Print each character until null or newline is reached, or if the
+          // end of the row is reached.
+          for (uint8_t col = 0; col < width && *c && *c != '\n'; col++, c++)
+            lcd->print(*c);
+
+          // If current character is newline, skip it!
+          if (*c == '\n') c++;
+        }
+      }
+      break;
   }
 
   needs_update = false;
@@ -107,6 +128,12 @@ void Display::setNetworkStatus(NetworkStatus status) {
 void Display::setRequest(Request *request) {
   this->request = request;
   if (screen == SCREEN_NETWORK)
+    needs_update = true;
+}
+
+void Display::setContent(const char *content) {
+  this->content = (char*)content;
+  if (screen == SCREEN_TEXT)
     needs_update = true;
 }
 

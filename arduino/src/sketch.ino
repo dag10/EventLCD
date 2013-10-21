@@ -68,10 +68,11 @@ void setup() {
     sleep(0.1);
   }
   
-  return;
+  if (request.failed())
+    return;
 
-  //if (!request.failed())
-    //backlight.flash(3);
+  display.setScreen(SCREEN_TEXT);
+  display.setContent(request.getData());
 }
 
 // Loop
