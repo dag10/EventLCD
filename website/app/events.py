@@ -64,7 +64,7 @@ class Events:
     response = requests.get(url);
 
     if response.status_code is not 200:
-      raise Exception('Google HTTP %d' % response.status_code)
+      raise Exception('Google %d' % response.status_code)
 
     events = response.json()['items']
     events = map(self.formatEvent, events)
