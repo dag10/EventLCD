@@ -127,7 +127,7 @@ bool Request::downloadResponse() {
 }
 
 bool Request::connected() {
-  return state == STATE_CONNECTED;
+  return state == STATE_CONNECTED && client.connected();
 }
 
 bool Request::failed() {

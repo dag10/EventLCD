@@ -7,10 +7,6 @@
 #include <LiquidCrystal595.h>
 #include "request.h"
 
-// LCD width and height
-const int width = 20;
-const int height = 4;
-
 // Possible screens to show
 typedef enum {
   SCREEN_NETWORK,
@@ -20,13 +16,17 @@ typedef enum {
 // Possible network statuses
 typedef enum {
   DISCONNECTED,
+  DHCP_FAILED,
   CONNECTED,
   CONNECTING,
+  RECONNECTING,
 } NetworkStatus;
 
 class Display {
   public:
-    Display(uint8_t data, uint8_t clock, uint8_t latch);
+    Display(
+        uint8_t data, uint8_t clock, uint8_t latch, uint8_t width,
+        uint8_t height);
 
     void update(float elapsed);
 
@@ -46,6 +46,8 @@ class Display {
     LiquidCrystal595 *lcd;
     Screen screen;
     bool needs_update;
+    uint8_t width;
+    uint8_t height;
 
     // Network data
     uint8_t mac[6];

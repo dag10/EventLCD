@@ -2,7 +2,12 @@
 
 #include "display.h"
 
-Display::Display(uint8_t data, uint8_t clock, uint8_t latch) {
+Display::Display(
+    uint8_t data, uint8_t clock, uint8_t latch, uint8_t width,
+    uint8_t height) {
+  this->width = width;
+  this->height = height;
+
   lcd = new LiquidCrystal595(data, latch, clock);
   lcd->begin(width, height);
   lcd->clear();
@@ -35,6 +40,10 @@ void Display::update(float elapsed) {
           lcd->print("connected");
         else if (network_status == CONNECTING)
           lcd->print("connecting");
+        else if (network_status == RECONNECTING)
+          lcd->print("reconnecting");
+        else if (network_status == DHCP_FAILED)
+          lcd->print("DHCP failed");
 
         // Print MAC address
         lcd->setCursor(0, 1);
@@ -57,8 +66,7 @@ void Display::update(float elapsed) {
             lcd->setCursor(0, 3);
 
             if (request->failed()) {
-              lcd->print("!");
-              printFirst(request->getErrorMessage(), 20 - 1);
+              printFirst(request->getErrorMessage(), 20);
             } else {
               lcd->print("HTTP: ");
               printFirst(request->getStatusString(), 20 - 6);

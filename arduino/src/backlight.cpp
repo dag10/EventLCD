@@ -22,9 +22,8 @@ Backlight::Backlight(int pin) {
 }
 
 void Backlight::update(float elapsed) {
-  if (!animate || elapsed == 0) {
+  if (!animate)
     brightness = brightness_target;
-  }
 
   if (sleep_remaining > 0) {
     sleep_remaining -= elapsed;
