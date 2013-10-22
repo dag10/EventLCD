@@ -1,8 +1,10 @@
 import requests
 from datetime import datetime
+import dateutil.parser
 import pytz
 import urllib
 import yaml
+import dateutil.parser
 
 class Events:
   def __init__(self):
@@ -25,9 +27,17 @@ class Events:
       List of events.
     """
     events = self.getEvents(20)
+
+    # Filter by location
     events = filter(
         lambda e: 'location' in e and location.lower() in e['location'].lower(),
         events)
+
+    # Filter out all-day events
+    #events = filter(
+        #lambda e: 'start' in e and 'time' in dir(e['start']),
+        #events)
+
     return events[:num]
 
 
@@ -53,7 +63,7 @@ class Events:
         'showDeleted': False,
         'singleEvents': True,
         'timeMin': isotime,
-        'fields': 'items(location, start, summary)',
+        'fields': 'items(location, start, end, summary)',
         'key': self.config['token'],
     }
 
@@ -81,7 +91,10 @@ class Events:
       Restructured dictionary.
     """
     if 'start' in e and 'dateTime' in e['start']:
-      e['start'] = e['start']['dateTime']
+      e['start'] = dateutil.parser.parse(e['start']['dateTime'])
+
+    if 'end' in e and 'dateTime' in e['end']:
+      e['end'] = dateutil.parser.parse(e['end']['dateTime'])
 
     return e
 
