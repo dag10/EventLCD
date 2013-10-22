@@ -16,7 +16,7 @@ uint8_t pin_lcd_latch = 5;
 // Settings
 const int delay_interval = 10; // milliseconds between ticks in sleep()
 uint8_t mac[] = {0x90, 0xA2, 0xDA, 0x0D, 0xBE, 0x94}; // MAC of board
-const float refresh_interval = 5; // seconds between each refresh TODO make 20
+const float refresh_interval = 20; // seconds between each refresh TODO make 20
 const float reconnect_interval = 10; // seconds between reconnection attempts
 const int max_http_retries = 3; // max HTTP retry attempts before iface retry
 const char *domain = "rancor.csh.rit.edu"; // domain of website

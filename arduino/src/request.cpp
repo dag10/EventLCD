@@ -33,6 +33,7 @@ bool Request::step() {
 
 bool Request::connect() {
   if (!client.connect(host, port)) {
+    client.stop();
     state = STATE_FAILED;
     error_message = "Failed to connect.";
     return false;
@@ -60,7 +61,7 @@ void Request::get() {
 
 bool Request::downloadResponse() {
   // Check for a disconnect
-  if (!client.connected()) {
+  if (!client || !client.connected()) {
     client.stop();
 
     if (capturing_body && buffer[0] != 0) {
@@ -88,6 +89,7 @@ bool Request::downloadResponse() {
       error_message = buffer; // I know this is cheap, but I want to conserve
                               // what I can of my 2K memory.
       sprintf(error_message, "Got %d %s", http_status, getResponseStatus());
+      client.stop();
       return false;
     }
   }
@@ -102,6 +104,7 @@ bool Request::downloadResponse() {
       if (++buffer_next >= buffer_length - 1) {
         error_message = "Buffer overflow";
         state = STATE_FAILED;
+        client.stop();
         return false;
       }
 
