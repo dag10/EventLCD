@@ -58,7 +58,7 @@ void setup() {
 
   // Create URL path
   const char *url_format = "/location/%s/events";
-  url = new char[strlen(url_format) + 3];
+  url = new char[strlen(url_format) - 2 + strlen(location) + 1];
   sprintf(url, url_format, location);
 }
 
@@ -89,7 +89,8 @@ void loop() {
 
     // Step through the HTTP request
     while (request.step())
-      updateDisplay();
+      if (display.getScreen() == SCREEN_NETWORK)
+        updateDisplay();
     
     // HTTP request failed, so display error message and wait a moment
     if (request.failed()) {

@@ -3,7 +3,7 @@
 #ifndef _DISPLAY_H
 #define _DISPLAY_H
 
-#include <arduino.h>
+#include <Arduino.h>
 #include <LiquidCrystal595.h>
 #include "request.h"
 
