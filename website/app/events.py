@@ -34,9 +34,9 @@ class Events:
         events)
 
     # Filter out all-day events
-    #events = filter(
-        #lambda e: 'start' in e and 'time' in dir(e['start']),
-        #events)
+    events = filter(
+        lambda e: 'start' in e and 'time' in dir(e['start']),
+        events)
 
     return events[:num]
 

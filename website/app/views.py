@@ -87,6 +87,9 @@ def eventIsNow(event):
   if 'start' not in event or 'end' not in event:
     return False
 
+  # Since Google returns all datetimes with the timezone of the calendar,
+  # and we're assuming this server is running in the same timezone,
+  # equalize all the timezones for time comparison.
   start = event['start'].replace(tzinfo=pytz.utc)
   end = event['end'].replace(tzinfo=pytz.utc)
 
