@@ -1,7 +1,7 @@
 /* Backlight controller. */
 
 #include "backlight.h"
-#include "Arduino.h"
+#include <Arduino.h>
 
 Backlight::Backlight(int pin) {
   this->pin = pin;
@@ -63,7 +63,12 @@ void Backlight::update(float elapsed) {
     }
   }
 
-  analogWrite(pin, 255.f / 100.f * brightness);
+  // Subtle pulsing heartbeat
+  float seconds = millis() / 1000.f;
+  float degrees = seconds * 90.f;
+  float heartbeat = (sin(degrees * 3.14156f / 180) + 1.f) / 2.f;
+
+  analogWrite(pin, 255.f / 100.f * (brightness * (1.f - (0.3f * heartbeat))));
 }
 
 bool Backlight::animationEnabled() {
