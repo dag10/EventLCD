@@ -3,7 +3,7 @@
 #ifndef _REQUEST_H
 #define _REQUEST_H
 
-#include <arduino.h>
+#include <Arduino.h>
 #include <Ethernet.h>
 #include <inttypes.h>
 
