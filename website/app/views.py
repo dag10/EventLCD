@@ -38,8 +38,7 @@ def index(location):
           lambda e: e['start'].date() == date.today(),
           events)
   except Exception as e:
-    raise e
-    error_str = 'Error: ' + str(e)
+    error_str = 'Error: ' + str(e).replace('\n', ' ')
 
   # Current time string
   time = datetime.now().strftime('%H:%M')
@@ -67,7 +66,7 @@ def index(location):
       output += '\n' + line[:cols]
 
   # If there are still rows but no more event, say so.
-  if len(events) < rows - 1 and rows > 1:
+  if len(events) < rows - 1 and rows > 1 and not error_str:
     if cols >= 20:
       output += '\nNo more events today' 
     elif cols > 15:

@@ -5,6 +5,7 @@ import pytz
 import urllib
 import yaml
 import dateutil.parser
+import re
 
 class Events:
   def __init__(self):
@@ -63,7 +64,7 @@ class Events:
         'showDeleted': False,
         'singleEvents': True,
         'timeMin': isotime,
-        'fields': 'items(location, start, end, summary)',
+        'fields': 'items(location, start, end, summary, description)',
         'key': self.config['token'],
     }
 
@@ -95,6 +96,13 @@ class Events:
 
     if 'end' in e and 'dateTime' in e['end']:
       e['end'] = dateutil.parser.parse(e['end']['dateTime'])
+
+    # If event description contains special tag [lcd: <value>], display that
+    # value instead of the event summary.
+    if 'description' in e:
+      lcdValue = re.findall(r'\[lcd:\s*([^\]]+)\]', e['description'])
+      if lcdValue:
+        e['summary'] = lcdValue[0]
 
     return e
 
