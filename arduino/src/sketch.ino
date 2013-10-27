@@ -106,10 +106,21 @@ void loop() {
       continue;
     }
     retries = 0;
+    char *response = (char*)request.getData();
+
+    // Parse requested backlight brightness from response body
+    for (char *c = response; *c; c++) {
+      if (*c == '\n') {
+        *c = 0;
+        backlight.setBrightness(atoi(response) / 255.f * 100.f);
+        response = c + 1;
+        break;
+      }
+    }
 
     // Show HTTP response body on screen then wait a bit before refreshing
     display.setScreen(SCREEN_TEXT);
-    display.setContent(request.getData());
+    display.setContent(response);
     sleep(refresh_interval);
   } while (maintainLease());
 

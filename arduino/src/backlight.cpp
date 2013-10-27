@@ -7,7 +7,7 @@ Backlight::Backlight(int pin) {
   this->pin = pin;
   pinMode(pin, OUTPUT);
 
-  animate_speed = 50;
+  animate_speed = 10;
   animate = true;
 
   sleep_remaining = 0;
@@ -22,9 +22,6 @@ Backlight::Backlight(int pin) {
 }
 
 void Backlight::update(float elapsed) {
-  if (!animate)
-    brightness = brightness_target;
-
   if (sleep_remaining > 0) {
     sleep_remaining -= elapsed;
     if (sleep_remaining > 0)
@@ -61,6 +58,8 @@ void Backlight::update(float elapsed) {
       else
         brightness -= delta;
     }
+  } else {
+    brightness = brightness_target;
   }
 
   // Subtle pulsing heartbeat
