@@ -45,6 +45,13 @@ def index(location):
 
   output = ''
 
+  # Figure out if it's quiet hours
+  hour = datetime.now().hour
+  quiet_hours = hour >= 23 or hour < 7
+
+  # Output requested backlight brightness
+  output += '60\n' if quiet_hours else '255\n'
+
   # If we have room for it, display the location name and current time.
   if rows > 1 and cols >= len(time) + len(location_name) + 1:
     output += location_name.upper()
