@@ -73,7 +73,8 @@ def index(location):
       output += '\n' + line[:cols]
 
   # If there are still rows but no more event, say so.
-  if len(events) < rows - 1 and rows > 1 and not error_str:
+  if len(events) == 0 and rows > 1 and not error_str:
+    output += '\n' * ((rows - 1) / 2)
     if cols >= 20:
       output += '\nNo more events today' 
     elif cols > 15:
