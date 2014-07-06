@@ -3,6 +3,8 @@ EventLCD
 
 A project using an Arduino Ethernet and LCD character display to show upcoming events in a location from a shared Google calendar.
 
+Pictures and more info can be found on [my blog](http://drewgottlieb.net/2014/03/02/opensource-event-display.html).
+
 Details
 -------
 
